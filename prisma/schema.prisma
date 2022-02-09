@@ -13,18 +13,31 @@ datasource db {
 // Current Model is created an enum at
 // path => node_modules/.prisma/client/index.js
 model Product {
-  id          String    @id @default(uuid())
-  name        String
-  barcode     String    @unique
-  price       Decimal
-  created_at  DateTime  @default(now())
+  id         String   @id @default(uuid())
+  name       String
+  barcode    String   @unique
+  price      Decimal
+  created_at DateTime @default(now())
 
   @@map("products")
+  ProductCategory ProductCategory[]
 }
 
 model Category {
-  id String   @id @default(uuid())
+  id   String @id @default(uuid())
   name String
 
   @@map("categories")
+  ProductCategory ProductCategory[]
+}
+
+model ProductCategory {
+  id String @id @default(uuid())
+
+  id_product  String
+  product     Product  @relation(fields: [id_product], references: [id])
+  id_category String
+  category    Category @relation(fields: [id_category], references: [id])
+
+  @@map("products_categories")
 }
