@@ -5,8 +5,14 @@ export class CreateProductController {
   async handle(request: Request, response: Response) {
     const { name, barcode, price } = request.body;
 
-    const product = await prismaClient.product;
+    const product = await prismaClient.product.create({
+      data: {
+        barcode,
+        name,
+        price,
+      },
+    });
 
-    return response.json();
+    return response.json(product);
   }
 }
